@@ -5,15 +5,10 @@ import { Dimensions, StyleSheet } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
-
-type Movie = {
-  id: string;
-  title: string;
-  imageUrl: string;
-};
+import { TMDBMovie, getPosterUrl } from "@/services/tmdb";
 
 type MovieGridProps = {
-  movies: Movie[];
+  movies: TMDBMovie[];
 };
 
 const { width } = Dimensions.get("window");
@@ -22,10 +17,10 @@ const spacing = 8;
 const itemWidth = (width - spacing * (numColumns + 1)) / numColumns;
 
 export function MovieGrid({ movies }: MovieGridProps) {
-  const renderItem = ({ item }: { item: Movie }) => (
+  const renderItem = ({ item }: { item: TMDBMovie }) => (
     <ThemedView style={styles.movieContainer}>
       <Image
-        source={{ uri: item.imageUrl }}
+        source={{ uri: getPosterUrl(item.poster_path) }}
         style={styles.movieImage}
         contentFit="cover"
       />
@@ -33,6 +28,14 @@ export function MovieGrid({ movies }: MovieGridProps) {
         <ThemedText numberOfLines={2} style={styles.title}>
           {item.title}
         </ThemedText>
+        <ThemedText style={styles.year}>
+          {new Date(item.release_date).getFullYear()}
+        </ThemedText>
+        <ThemedView style={styles.ratingContainer}>
+          <ThemedText style={styles.rating}>
+            ★ {item.vote_average.toFixed(1)}
+          </ThemedText>
+        </ThemedView>
       </ThemedView>
     </ThemedView>
   );
@@ -44,7 +47,7 @@ export function MovieGrid({ movies }: MovieGridProps) {
         renderItem={renderItem}
         estimatedItemSize={300}
         numColumns={numColumns}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.listContent}
       />
     </ThemedView>
@@ -76,5 +79,17 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontWeight: "600",
+  },
+  year: {
+    fontSize: 12,
+    color: Colors.dark.icon,
+    marginTop: 2,
+  },
+  ratingContainer: {
+    marginTop: 4,
+  },
+  rating: {
+    fontSize: 12,
+    color: "#FFD700",
   },
 });

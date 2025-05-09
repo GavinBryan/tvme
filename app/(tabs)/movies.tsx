@@ -1,56 +1,51 @@
-import { StyleSheet } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, StyleSheet } from "react-native";
 
 import { MovieGrid } from "@/components/MovieGrid";
+import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-
-// Mock data for movies
-const mockMovies = [
-  {
-    id: "1",
-    title: "Inception",
-    imageUrl: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
-  },
-  {
-    id: "2",
-    title: "The Dark Knight",
-    imageUrl: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-  },
-  {
-    id: "3",
-    title: "Interstellar",
-    imageUrl: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
-  },
-  {
-    id: "4",
-    title: "The Matrix",
-    imageUrl: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
-  },
-  {
-    id: "5",
-    title: "Pulp Fiction",
-    imageUrl: "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
-  },
-  {
-    id: "6",
-    title: "Fight Club",
-    imageUrl: "https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg",
-  },
-  {
-    id: "7",
-    title: "The Shawshank Redemption",
-    imageUrl: "https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg",
-  },
-  {
-    id: "8",
-    title: "Forrest Gump",
-    imageUrl: "https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg",
-  },
-];
+import { TMDBMovie, getPopularMovies } from "@/services/tmdb";
 
 export default function MoviesScreen() {
+  const [movies, setMovies] = useState<TMDBMovie[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchMovies() {
+      try {
+        const response = await getPopularMovies();
+        setMovies(response.results);
+      } catch (err) {
+        setError("Failed to load movies");
+        console.error("Error fetching movies:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchMovies();
+  }, []);
+
+  if (loading) {
+    return (
+      <ThemedView style={styles.centerContainer}>
+        <ActivityIndicator size="large" color="#fff" />
+      </ThemedView>
+    );
+  }
+
+  if (error) {
+    return (
+      <ThemedView style={styles.centerContainer}>
+        <ThemedText>{error}</ThemedText>
+      </ThemedView>
+    );
+  }
+
   return (
     <ThemedView style={styles.container}>
-      <MovieGrid movies={mockMovies} />
+      <MovieGrid movies={movies} />
     </ThemedView>
   );
 }
@@ -58,5 +53,10 @@ export default function MoviesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
