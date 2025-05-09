@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+This is an Expo https://expo.dev/ mobile app that will run on iOS and Android.
+
+It will use Supeabase https://supabase.com for everything on the backend like auth, api and database.
+
+I want to create a modern design.
+
+The app will use the Expo router.
