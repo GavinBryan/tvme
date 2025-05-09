@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { Colors } from "@/constants/Colors";
 
 type Item = {
   id: string;
@@ -41,5 +42,7 @@ const styles = StyleSheet.create({
   item: {
     padding: 16,
     gap: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.dark.border,
   },
 });

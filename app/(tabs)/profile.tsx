@@ -4,11 +4,15 @@ import { StyleSheet } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
 
 export default function ProfileScreen() {
+  const colorScheme = useColorScheme() ?? "light";
+
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#E8D5C4", dark: "#3D2C2E" }}
+      headerBackgroundColor={{ light: "#1A1A1A", dark: "#1A1A1A" }}
       headerImage={
         <Image
           source={require("@/assets/images/partial-react-logo.png")}
@@ -63,6 +67,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: "absolute",
+    opacity: 0.3,
   },
   profileHeader: {
     alignItems: "center",
@@ -74,6 +79,8 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     overflow: "hidden",
     marginBottom: 16,
+    borderWidth: 2,
+    borderColor: Colors.dark.border,
   },
   avatar: {
     width: "100%",
@@ -85,7 +92,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: "#E5E5E5",
+    borderColor: Colors.dark.border,
   },
   statItem: {
     alignItems: "center",

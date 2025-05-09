@@ -28,12 +28,22 @@ const exampleItems = [
     title: "Stay Updated",
     description: "Get notifications for new episodes",
   },
+  {
+    id: "5",
+    title: "Item 5",
+    description: "Get notifications for new episodes",
+  },
+  {
+    id: "6",
+    title: "Item 6",
+    description: "Get notifications for new episodes",
+  },
 ];
 
 export default function HomeScreen() {
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
+      headerBackgroundColor={{ light: "#1A1A1A", dark: "#1A1A1A" }}
       headerImage={
         <Image
           source={require("@/assets/images/partial-react-logo.png")}
@@ -68,5 +78,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: "absolute",
+    opacity: 0.3,
   },
 });
